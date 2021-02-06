@@ -1,5 +1,5 @@
 import { mapObject, mergeObjects } from "./collections-utils";
-import { fabricatorName, items, secondsToProduceOne, shortName } from "./items";
+import { fabricatorName, items, secondsToProduceOne, deriveShortName, FabOptions } from "./items";
 
 function twoDp(x: number): number {
     return Math.round(x * 100) / 100
@@ -7,9 +7,7 @@ function twoDp(x: number): number {
 
 function totalIngredientsPerMinute(
     goals: { [key: string]: number }, // mapping of item name to number to be fabricated per minute
-    fastestAssembler: string = 'assembling machine 3',
-    fastestFurnace: string = 'steel furnace',
-    fastestMine: string = 'electric mining drill',
+    fabOptions?: FabOptions
 ): { [key: string]: any } {
 
     function totalIngredientsForOneOf(inputName: string, depth: number = 0): { [key: string]: number } {
@@ -36,21 +34,18 @@ function totalIngredientsPerMinute(
 
 
     const expandedDependencies = mapObject(mergedDependencies, (name, perMinuteTarget) => {
-        const perMinute = twoDp(60 / secondsToProduceOne(name, fastestAssembler, fastestFurnace, fastestMine))
+        const perMinute = twoDp(60 / secondsToProduceOne(name, fabOptions))
         const fabsRequired = Math.ceil(perMinuteTarget / perMinute)
         const totalPerMinute = perMinute * fabsRequired
         const surplus = twoDp(totalPerMinute - perMinuteTarget)
         const surplusPercentage = twoDp(100 * (totalPerMinute - perMinuteTarget) / totalPerMinute)
 
-        if (Object.keys(goals).includes(name))
-            console.log(name, '-', fabsRequired, 'fab unit(s) are needed to produce', perMinuteTarget, 'per minute, with', surplus, '(', surplusPercentage, '%) surplus')
-
         return [name, {
             item: name,
-            shortName: shortName(name),
+            shortName: deriveShortName(name),
             demandPerMinute: perMinuteTarget,
             fabricatorsRequired: fabsRequired,
-            fabricator: fabricatorName(name, fastestAssembler, fastestFurnace, fastestMine),
+            fabricator: fabricatorName(name, fabOptions),
             surplusPerMinute: surplus,
             surplusPercentage: surplusPercentage
         }]
@@ -59,14 +54,40 @@ function totalIngredientsPerMinute(
     return expandedDependencies
 }
 
+function goalsAsGraphviz(
+    goals: { [key: string]: number }, // mapping of item name to number to be fabricated per minute
+    fabOptions?: FabOptions
+) {
+    const allFabricators = totalIngredientsPerMinute(goals, fabOptions)
+
+    const dependencies = new Set<string>()
+    Object.values(allFabricators)
+        .forEach(({ item, shortName }) => {
+            Object.keys(items[item].ingredients)
+                .forEach(s => dependencies.add(`${deriveShortName(s)} -> ${shortName}`))
+        })
+
+    console.log('digraph {')
+    console.log('  overlap = prism;')
+    console.log('  splines = true;')
+
+    Object.values(allFabricators).forEach(({ item, shortName, fabricatorsRequired, fabricator }) => {
+        const options = [`label="${item}: ${fabricatorsRequired} x ${deriveShortName(fabricator)}"`]
+        if (Object.keys(goals).includes(item)) { options.push(`fillcolor="red"`); options.push(`style="filled"`) }
+        console.log(`  ${shortName} [${options.join(',')}];`)
+    })
+    dependencies.forEach((s) => console.log(`  ${s};`))
+    console.log('}')
+}
 
 
-console.log(totalIngredientsPerMinute(
+goalsAsGraphviz(
     {
-        'logistic science pack': 10,
-        'automation science pack': 10,
-        'military science pack': 10,
+        //'logistic science pack': 10,
+        //'automation science pack': 10,
+        //'military science pack': 10,
         'chemical science pack': 10
     },
-    'assembling machine 2',
-))
+    { fastestAssembler: 'assembling machine 2' },
+)
+// Feed this output to something like `neato -Tpng > test.png` to see the graph.

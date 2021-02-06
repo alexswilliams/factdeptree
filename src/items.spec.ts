@@ -1,4 +1,4 @@
-import { items, shortName } from "./items"
+import { items, deriveShortName } from "./items"
 
 test('All ingredients have an items entry', () => {
     const allItems = Object.keys(items)
@@ -17,7 +17,7 @@ test('No items can be built instantly', () => {
 test('All items have unique short names', () => {
     const groupedNames: { [key: string]: string[] } = {}
     Object.keys(items).forEach(name => {
-        const short = shortName(name)
+        const short = deriveShortName(name)
         if (!groupedNames[short])
             groupedNames[short] = [name]
         else
