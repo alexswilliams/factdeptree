@@ -1,5 +1,5 @@
 
-export type itemType = 'mine' | 'oil pump' | 'water pump' | 'furnace' | 'refinery' | 'assembler' | 'chemical plant' | 'power producer'
+export type itemType = 'mine' | 'oil pump' | 'water pump' | 'furnace' | 'refinery' | 'assembler' | 'chemical plant' | 'power producer' | 'centrifuge'
 export type constructorType = { type: itemType | 'raw element', excluding?: string }
 
 export interface item {
@@ -30,6 +30,7 @@ export const REFINERY: constructorType = { type: 'refinery' }
 export const MINE: constructorType = { type: 'mine' }
 export const WATER_PUMP: constructorType = { type: 'water pump' }
 export const OIL_PUMP: constructorType = { type: 'oil pump' }
+export const CENTRIFUGE: constructorType = { type: 'centrifuge' }
 
 export function secondsToProduceOne(itemName: string, fabOptions?: FabOptions): number {
     const fabricatorId = fabricatorName(itemName, fabOptions)
@@ -48,12 +49,13 @@ export function fabricatorName(itemName: string, fabOptions?: FabOptions): strin
     const madeIn = items[itemName].madeIn ?? ASSEMBLER
     return {
         'assembler': fabOptions?.fastestAssembler ?? 'assembling machine 3',
-        'furnace': fabOptions?.fastestFurnace ?? 'steel furnace',
+        'furnace': fabOptions?.fastestFurnace ?? 'electric furnace',
         'mine': fabOptions?.fastestMine ?? 'electric mining drill',
         'chemical plant': 'chemical plant',
         'oil pump': 'pumpjack',
         'refinery': 'oil refinery',
         'water pump': 'offshore pump',
+        'centrifuge': 'centrifuge',
         'power producer': undefined,
         'raw element': undefined,
     }[madeIn.type]
@@ -76,6 +78,7 @@ export const items: { [key: string]: item } = {
     'crude oil': { madeIn: OIL_PUMP, ingredients: {} },
     'copper ore': { madeIn: MINE, ingredients: {} },
     'coal': { madeIn: MINE, ingredients: {} },
+    'uranium ore': { madeIn: MINE, ingredients: {} },
 
     // Logistics
     'wooden chest': { fabTime: 0.5, ingredients: { 'wood': 2 } },
@@ -101,11 +104,12 @@ export const items: { [key: string]: item } = {
     'small electric pole': { yield: 2, fabTime: 0.5, ingredients: { 'wood': 1, 'copper cable': 2 } },
     'medium electric pole': { fabTime: 0.5, ingredients: { 'copper plate': 2, 'steel plate': 2, 'iron stick': 4 } },
     'big electric pole': { fabTime: 0.5, ingredients: { 'copper plate': 5, 'steel plate': 5, 'iron stick': 8 } },
+    'substation': { shortName: 'sub', fabTime: 0.5, ingredients: { 'copper plate': 5, 'steel plate': 10, 'advanced circuit': 5 } },
     'pipe': { fabTime: 0.5, ingredients: { 'iron plate': 1 } },
     'pipe to ground': { yield: 2, fabTime: 0.5, ingredients: { 'iron plate': 5, 'pipe': 10 } },
     'pump': { shortName: 'pu', inputs: { 'electricity': 30 }, fabTime: 2, ingredients: { 'steel plate': 1, 'engine unit': 1, 'pipe': 1 } },
 
-    'rail': { yield: 2, fabTime: 0.5, ingredients: { 'stone': 1, 'steel plate': 1, 'iron stick': 1 } },
+    'rail': { shortName: 'rail', yield: 2, fabTime: 0.5, ingredients: { 'stone': 1, 'steel plate': 1, 'iron stick': 1 } },
     'train stop': { fabTime: 0.5, ingredients: { 'iron plate': 6, 'steel plate': 3, 'iron stick': 6, 'electronic circuit': 5 } },
     'rail signal': { fabTime: 0.5, ingredients: { 'iron plate': 5, 'electronic circuit': 1 } },
     'rail chain signal': { fabTime: 0.5, ingredients: { 'iron plate': 5, 'electronic circuit': 1 } },
@@ -147,11 +151,13 @@ export const items: { [key: string]: item } = {
 
     'stone furnace': { shortName: 'stof', type: 'furnace', fuelKW: 90, fabSpeedMultiplier: 1, fabTime: 0.5, ingredients: { 'stone': 5 } },
     'steel furnace': { shortName: 'stef', type: 'furnace', fuelKW: 90, fabSpeedMultiplier: 2, fabTime: 3, ingredients: { 'steel plate': 6, 'stone brick': 10 } },
+    'electric furnace': { type: 'furnace', inputs: { 'electricity': 186 }, fabSpeedMultiplier: 2, fabTime: 5, ingredients: { 'steel plate': 10, 'advanced circuit': 5, 'stone brick': 10 } },
 
     'assembling machine 1': { type: 'assembler', fabSpeedMultiplier: 0.5, inputs: { 'electricity': 77.5 }, fabTime: 0.5, ingredients: { 'iron plate': 9, 'iron gear wheel': 5, 'electronic circuit': 3 } },
     'assembling machine 2': { type: 'assembler', fabSpeedMultiplier: 0.75, inputs: { 'electricity': 155 }, fabTime: 0.5, ingredients: { 'steel plate': 2, 'iron gear wheel': 5, 'electronic circuit': 3, 'assembling machine 1': 1 } },
     'oil refinery': { type: 'refinery', fabSpeedMultiplier: 1, inputs: { 'electricity': 434 }, fabTime: 8, ingredients: { 'steel plate': 15, 'iron gear wheel': 10, 'electronic circuit': 10, 'pipe': 10, 'stone brick': 10 } },
     'chemical plant': { shortName: 'chem', type: 'chemical plant', fabSpeedMultiplier: 1, inputs: { 'electricity': 217 }, fabTime: 5, ingredients: { 'steel plate': 5, 'iron gear wheel': 5, 'electronic circuit': 5, 'pipe': 5 } },
+    'centrifuge': { shortName: 'cen', type: 'centrifuge', fabTime: 4, ingredients: { 'steel plate': 50, 'iron gear wheel': 100, 'advanced circuit': 100, 'concrete': 100 } },
     'lab': { inputs: { 'electricity': 60 }, fabTime: 2, ingredients: { 'iron gear wheel': 10, 'electronic circuit': 10, 'transport belt': 4 } },
 
     'speed module': { fabTime: 15, ingredients: { 'electronic circuit': 5, 'advanced circuit': 5 } },
@@ -161,6 +167,8 @@ export const items: { [key: string]: item } = {
     // Intermediate Products
     'sulfuric acid': { yield: 50, madeIn: CHEMICAL_PLANT, fabTime: 1, ingredients: { 'iron plate': 1, 'sulfur': 5, 'water': 100 } },
     'petroleum gas': { yield: 45, madeIn: REFINERY, fabTime: 5, ingredients: { 'crude oil': 100 } },
+    'heavy oil': { yield: 25, madeIn: REFINERY, fabTime: 5, ingredients: { 'water': 50, 'crude oil': 100 } },
+    'light oil': { yield: 45, madeIn: REFINERY, fabTime: 5, ingredients: { 'water': 50, 'crude oil': 100 } },
     'solid fuel': { madeIn: CHEMICAL_PLANT, fabTime: 2, ingredients: { 'petroleum gas': 20 } },
 
     'iron plate': { madeIn: FURNACE, fabTime: 3.2, ingredients: { 'iron ore': 1 } },
@@ -170,6 +178,8 @@ export const items: { [key: string]: item } = {
     'sulfur': { madeIn: CHEMICAL_PLANT, yield: 2, fabTime: 1, ingredients: { 'water': 30, 'petroleum gas': 30 } },
     'battery': { madeIn: CHEMICAL_PLANT, fabTime: 4, ingredients: { 'iron plate': 1, 'copper plate': 1, 'sulfuric acid': 20 } },
     'explosives': { madeIn: CHEMICAL_PLANT, yield: 2, fabTime: 4, ingredients: { 'coal': 1, 'sulfur': 1, 'water': 10 } },
+    'uranium-235': { shortName: 'u235', madeIn: CENTRIFUGE, yield: 0.07, fabTime: 12, ingredients: { 'uranium ore': 10 } },
+    'uranium-238': { shortName: 'u238', madeIn: CENTRIFUGE, yield: 9.93, fabTime: 12, ingredients: { 'uranium ore': 10 } },
 
     'copper cable': { yield: 2, fabTime: 0.5, ingredients: { 'copper plate': 1 } },
     'iron stick': { yield: 2, fabTime: 0.5, ingredients: { 'iron plate': 1 } },
@@ -178,21 +188,29 @@ export const items: { [key: string]: item } = {
     'electronic circuit': { fabTime: 0.5, ingredients: { 'iron plate': 1, 'copper cable': 3 } },
     'advanced circuit': { shortName: 'adv', fabTime: 6, ingredients: { 'plastic bar': 2, 'copper cable': 4, 'electronic circuit': 2 } },
     'engine unit': { madeIn: ASSEMBLER, fabTime: 10, ingredients: { 'steel plate': 1, 'iron gear wheel': 1, 'pipe': 2 } },
+    'low density structure': { fabTime: 20, ingredients: { 'copper plate': 20, 'steel plate': 2, 'plastic bar': 5 } },
+    'rocket fuel': { madeIn: ASSEMBLER_2_3, fabTime: 30, ingredients: { 'solid fuel': 10, 'light oil': 10 } },
+    'uranium fuel cell': { fabTime: 10, ingredients: { 'iron plate': 10, 'uranium-235': 1, 'uranium-238': 19 } },
 
     'automation science pack': { fabTime: 5, ingredients: { 'copper plate': 1, 'iron gear wheel': 1 } },
     'logistic science pack': { fabTime: 6, ingredients: { 'transport belt': 1, 'inserter': 1 } },
     'military science pack': { yield: 2, fabTime: 10, ingredients: { 'piercing rounds magazine': 1, 'grenade': 1, 'wall': 2 } },
     'chemical science pack': { yield: 2, fabTime: 24, ingredients: { 'sulfur': 1, 'advanced circuit': 3, 'engine unit': 2 } },
+    'production science pack': { yield: 3, fabTime: 21, ingredients: { 'rail': 30, 'electric furnace': 1, 'productivity module': 1 } },
 
     // Combat
+
     'pistol': { shortName: 'pst', fabTime: 5, ingredients: { 'iron plate': 5, 'copper plate': 5 } },
     'submachine gun': { fabTime: 10, ingredients: { 'iron plate': 10, 'copper plate': 5, 'iron gear wheel': 10 } },
     'shotgun': { shortName: 'shg', fabTime: 10, ingredients: { 'wood': 5, 'iron plate': 15, 'copper plate': 10, 'iron gear wheel': 5 } },
+    'rocket': { fabTime: 8, ingredients: { 'iron plate': 2, 'explosives': 1, 'electronic circuit': 1 } },
     'flamethrower': { fabTime: 10, ingredients: { 'steel plate': 5, 'iron gear wheel': 10 } },
+    'land mine': { fabTime: 5, yield: 4, ingredients: { 'steel plate': 1, 'explosives': 2 } },
 
     'firearm magazine': { fabTime: 1, ingredients: { 'iron plate': 4 } },
     'piercing rounds magazine': { fabTime: 3, ingredients: { 'copper plate': 5, 'steel plate': 1, 'firearm magazine': 1 } },
     'shotgun shells': { fabTime: 3, ingredients: { 'iron plate': 2, 'copper plate': 2 } },
+    'rocket launcher': { fabTime: 10, ingredients: { 'iron plate': 5, 'iron gear wheel': 5, 'electronic circuit': 5 } },
     'flamethrower ammo': { madeIn: CHEMICAL_PLANT, fabTime: 6, ingredients: { 'steel plate': 5, 'crude oil': 100 } },
 
     'grenade': { shortName: 'gr', fabTime: 8, ingredients: { 'coal': 10, 'iron plate': 5 } },
@@ -202,7 +220,7 @@ export const items: { [key: string]: item } = {
     'heavy armor': { fabTime: 8, ingredients: { 'copper plate': 100, 'steel plate': 50 } },
     'modular armor': { fabTime: 15, ingredients: { 'steel plate': 50, 'advanced circuit': 30 } },
 
-    'portable solar panel': { fabTime: 10, outputs: { 'electricity': 30 }, ingredients: { 'steel plate': 5, 'advanced circuit': 2, 'solar panel': 1 } },
+    'portable solar panel': { shortName: 'psol', fabTime: 10, outputs: { 'electricity': 30 }, ingredients: { 'steel plate': 5, 'advanced circuit': 2, 'solar panel': 1 } },
     'personal battery': { shortName: 'pbat', fabTime: 10, ingredients: { 'steel plate': 10, 'battery': 5 } },
     'belt immunity equipment': { fabTime: 10, ingredients: { 'steel plate': 10, 'advanced circuit': 5 } },
     'nightvision': { fabTime: 10, ingredients: { 'steel plate': 10, 'advanced circuit': 5 } },

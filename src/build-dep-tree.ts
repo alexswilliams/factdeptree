@@ -86,7 +86,9 @@ goalsAsGraphviz(
         //'logistic science pack': 10,
         //'automation science pack': 10,
         //'military science pack': 10,
-        'chemical science pack': 10
+        //'chemical science pack': 10,
+        'production science pack': 10,
+        //'solar panel': 5
     },
     { fastestAssembler: 'assembling machine 2' },
 )
