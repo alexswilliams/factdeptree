@@ -59,7 +59,7 @@ function goalsAsGraphviz(
     fabOptions?: FabOptions
 ) {
     const allFabricators = totalIngredientsPerMinute(goals, fabOptions)
-
+    console.error(allFabricators)
     const dependencies = new Set<string>()
     Object.values(allFabricators)
         .forEach(({ item, shortName }) => {
@@ -88,7 +88,8 @@ goalsAsGraphviz(
         //'military science pack': 10,
         //'chemical science pack': 10,
         'production science pack': 10,
-        //'solar panel': 5
+        //'solar panel': 5,
+        //'rail': 100,
     },
     { fastestAssembler: 'assembling machine 2' },
 )
