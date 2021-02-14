@@ -1,5 +1,5 @@
 
-export type itemType = 'mine' | 'oil pump' | 'water pump' | 'furnace' | 'refinery' | 'assembler' | 'chemical plant' | 'power producer' | 'centrifuge'
+export type itemType = 'mine' | 'oil pump' | 'water pump' | 'furnace' | 'refinery' | 'assembler' | 'chemical plant' | 'power producer' | 'centrifuge' | 'silo'
 export type constructorType = { type: itemType | 'raw element', excluding?: string }
 
 export interface item {
@@ -31,6 +31,7 @@ export const MINE: constructorType = { type: 'mine' }
 export const WATER_PUMP: constructorType = { type: 'water pump' }
 export const OIL_PUMP: constructorType = { type: 'oil pump' }
 export const CENTRIFUGE: constructorType = { type: 'centrifuge' }
+export const ROCKET_SILO: constructorType = { type: 'silo' }
 
 export function secondsToProduceOne(itemName: string, fabOptions?: FabOptions): number {
     const fabricatorId = fabricatorName(itemName, fabOptions)
@@ -56,6 +57,7 @@ export function fabricatorName(itemName: string, fabOptions?: FabOptions): strin
         'refinery': 'oil refinery',
         'water pump': 'offshore pump',
         'centrifuge': 'centrifuge',
+        'silo': 'rocket silo',
         'power producer': undefined,
         'raw element': undefined,
     }[madeIn.type]
@@ -79,6 +81,9 @@ export const items: { [key: string]: item } = {
     'copper ore': { madeIn: MINE, ingredients: {} },
     'coal': { madeIn: MINE, ingredients: {} },
     'uranium ore': { madeIn: MINE, ingredients: { 'sulfuric acid': 1 } },
+
+    // Rocket parts
+    'rocket part': { shortName: 'rop', madeIn: ROCKET_SILO, fabTime: 3, ingredients: { 'rocket control unit': 10, 'low density structure': 10, 'rocket fuel': 10 } },
 
     // Logistics
     'wooden chest': { fabTime: 0.5, ingredients: { 'wood': 2 } },
@@ -183,6 +188,8 @@ export const items: { [key: string]: item } = {
     'productivity module': { fabTime: 15, ingredients: { 'electronic circuit': 5, 'advanced circuit': 5 } },
     'productivity module 2': { fabTime: 30, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'productivity module': 4 } },
     'productivity module 3': { fabTime: 60, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'productivity module 2': 5 } },
+
+    'rocket silo': { type: 'silo', shortName: 'silo', fabTime: 30, ingredients: { 'steel plate': 1000, 'processing unit': 200, 'electric engine unit': 200, 'pipe': 100, 'concrete': 1000 } },
 
     // Intermediate Products
     'sulfuric acid': { yield: 50, madeIn: CHEMICAL_PLANT, fabTime: 1, ingredients: { 'iron plate': 1, 'sulfur': 5, 'water': 100 } },
