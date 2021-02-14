@@ -87,10 +87,11 @@ goalsAsGraphviz(
         //'automation science pack': 10,
         //'military science pack': 10,
         //'chemical science pack': 10,
-        'production science pack': 10,
+        //'production science pack': 10,
+        'utility science pack': 10,
         //'solar panel': 5,
         //'rail': 100,
     },
-    { fastestAssembler: 'assembling machine 2' },
+    { fastestAssembler: 'assembling machine 3' },
 )
 // Feed this output to something like `neato -Tpng > test.png` to see the graph.

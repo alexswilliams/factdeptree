@@ -78,7 +78,7 @@ export const items: { [key: string]: item } = {
     'crude oil': { madeIn: OIL_PUMP, ingredients: {} },
     'copper ore': { madeIn: MINE, ingredients: {} },
     'coal': { madeIn: MINE, ingredients: {} },
-    'uranium ore': { madeIn: MINE, ingredients: {} },
+    'uranium ore': { madeIn: MINE, ingredients: { 'sulfuric acid': 1 } },
 
     // Logistics
     'wooden chest': { fabTime: 0.5, ingredients: { 'wood': 2 } },
@@ -87,11 +87,14 @@ export const items: { [key: string]: item } = {
     'storage tank': { shortName: 'tank', fabTime: 3, ingredients: { 'iron plate': 20, 'steel plate': 5 } },
 
     'transport belt': { yield: 2, fabTime: 0.5, ingredients: { 'iron plate': 1, 'iron gear wheel': 1 } },
-    'fast transport belt': { fabTime: 3.5, ingredients: { 'iron gear wheel': 5, 'transport belt': 1 } },
+    'fast transport belt': { fabTime: 0.5, ingredients: { 'iron gear wheel': 5, 'transport belt': 1 } },
+    'express transport belt': { madeIn: ASSEMBLER_2_3, fabTime: 0.5, ingredients: { 'iron gear wheel': 10, 'fast transport belt': 1, 'lubricant': 20 } },
     'underground belt': { yield: 2, fabTime: 1, ingredients: { 'iron plate': 10, 'transport belt': 5 } },
     'fast underground belt': { yield: 2, fabTime: 2, ingredients: { 'iron gear wheel': 40, 'underground belt': 2 } },
+    'express underground belt': { yield: 2, madeIn: ASSEMBLER_2_3, fabTime: 2, ingredients: { 'iron gear wheel': 80, 'fast underground belt': 2, 'lubricant': 40 } },
     'splitter': { shortName: 'spl', fabTime: 1, ingredients: { 'iron plate': 5, 'electronic circuit': 5, 'transport belt': 4 } },
     'fast splitter': { fabTime: 2, ingredients: { 'iron gear wheel': 10, 'electronic circuit': 10, 'splitter': 1 } },
+    'express splitter': { shortName: 'xspl', madeIn: ASSEMBLER_2_3, fabTime: 2, ingredients: { 'iron gear wheel': 10, 'advanced circuit': 10, 'fast splitter': 1, 'lubricant': 80 } },
 
     'burner inserter': { fuelKW: 94.2, fabTime: 0.5, ingredients: { 'iron plate': 1, 'iron gear wheel': 1 } },
     'inserter': { inputs: { 'electricity': 13.6 }, fabTime: 0.5, ingredients: { 'iron plate': 1, 'iron gear wheel': 1, 'electronic circuit': 1 } },
@@ -120,6 +123,7 @@ export const items: { [key: string]: item } = {
     'car': { fabTime: 2, ingredients: { 'iron plate': 20, 'steel plate': 5, 'engine unit': 8 } },
 
     'logistic robot': { fabTime: 0.5, inputs: { 'electricity': 18 }, ingredients: { 'advanced circuit': 2, 'flying robot frame': 1 } },
+    'construction robot': { fabTime: 0.5, inputs: { 'electricity': 21 }, ingredients: { 'electronic circuit': 2, 'flying robot frame': 1 } },
     'passive provider chest': { fabTime: 0.5, ingredients: { 'electronic circuit': 3, 'advanced circuit': 1, 'steel chest': 1 } },
     'storage chest': { shortName: 'stoc', fabTime: 0.5, ingredients: { 'electronic circuit': 3, 'advanced circuit': 1, 'steel chest': 1 } },
     'roboport': { shortName: 'robo', fabTime: 5, inputs: { 'electricity': 4050 }, ingredients: { 'steel plate': 45, 'iron gear wheel': 45, 'advanced circuit': 45 } },
@@ -164,14 +168,21 @@ export const items: { [key: string]: item } = {
 
     'assembling machine 1': { type: 'assembler', fabSpeedMultiplier: 0.5, inputs: { 'electricity': 77.5 }, fabTime: 0.5, ingredients: { 'iron plate': 9, 'iron gear wheel': 5, 'electronic circuit': 3 } },
     'assembling machine 2': { type: 'assembler', fabSpeedMultiplier: 0.75, inputs: { 'electricity': 155 }, fabTime: 0.5, ingredients: { 'steel plate': 2, 'iron gear wheel': 5, 'electronic circuit': 3, 'assembling machine 1': 1 } },
+    'assembling machine 3': { type: 'assembler', fabSpeedMultiplier: 1.25, inputs: { 'electricity': 388 }, fabTime: 0.5, ingredients: { 'assembling machine 2': 2, 'speed module': 2 } },
     'oil refinery': { type: 'refinery', fabSpeedMultiplier: 1, inputs: { 'electricity': 434 }, fabTime: 8, ingredients: { 'steel plate': 15, 'iron gear wheel': 10, 'electronic circuit': 10, 'pipe': 10, 'stone brick': 10 } },
     'chemical plant': { shortName: 'chem', type: 'chemical plant', fabSpeedMultiplier: 1, inputs: { 'electricity': 217 }, fabTime: 5, ingredients: { 'steel plate': 5, 'iron gear wheel': 5, 'electronic circuit': 5, 'pipe': 5 } },
     'centrifuge': { shortName: 'cen', type: 'centrifuge', fabTime: 4, ingredients: { 'steel plate': 50, 'iron gear wheel': 100, 'advanced circuit': 100, 'concrete': 100 } },
     'lab': { inputs: { 'electricity': 60 }, fabTime: 2, ingredients: { 'iron gear wheel': 10, 'electronic circuit': 10, 'transport belt': 4 } },
 
     'speed module': { fabTime: 15, ingredients: { 'electronic circuit': 5, 'advanced circuit': 5 } },
+    'speed module 2': { fabTime: 30, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'speed module': 4 } },
+    'speed module 3': { fabTime: 60, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'speed module 2': 5 } },
     'efficiency module': { fabTime: 15, ingredients: { 'electronic circuit': 5, 'advanced circuit': 5 } },
+    'efficiency module 2': { fabTime: 30, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'efficiency module': 4 } },
+    'efficiency module 3': { fabTime: 60, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'efficiency module 2': 5 } },
     'productivity module': { fabTime: 15, ingredients: { 'electronic circuit': 5, 'advanced circuit': 5 } },
+    'productivity module 2': { fabTime: 30, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'productivity module': 4 } },
+    'productivity module 3': { fabTime: 60, ingredients: { 'advanced circuit': 5, 'processing unit': 5, 'productivity module 2': 5 } },
 
     // Intermediate Products
     'sulfuric acid': { yield: 50, madeIn: CHEMICAL_PLANT, fabTime: 1, ingredients: { 'iron plate': 1, 'sulfur': 5, 'water': 100 } },
@@ -201,6 +212,7 @@ export const items: { [key: string]: item } = {
     'engine unit': { madeIn: ASSEMBLER, fabTime: 10, ingredients: { 'steel plate': 1, 'iron gear wheel': 1, 'pipe': 2 } },
     'electric engine unit': { madeIn: ASSEMBLER_2_3, fabTime: 10, ingredients: { 'electronic circuit': 2, 'engine unit': 1, 'lubricant': 15 } },
     'flying robot frame': { fabTime: 20, ingredients: { 'steel plate': 1, 'battery': 2, 'electronic circuit': 3, 'electric engine unit': 1 } },
+    'rocket control unit': { fabTime: 30, ingredients: { 'processing unit': 1, 'speed module': 1 } },
     'low density structure': { fabTime: 20, ingredients: { 'copper plate': 20, 'steel plate': 2, 'plastic bar': 5 } },
     'rocket fuel': { madeIn: ASSEMBLER_2_3, fabTime: 30, ingredients: { 'solid fuel': 10, 'light oil': 10 } },
     'nuclear fuel': { madeIn: CENTRIFUGE, fabTime: 90, ingredients: { 'rocket fuel': 1, 'uranium-235': 1 } },
@@ -218,6 +230,7 @@ export const items: { [key: string]: item } = {
     'pistol': { shortName: 'pst', fabTime: 5, ingredients: { 'iron plate': 5, 'copper plate': 5 } },
     'submachine gun': { fabTime: 10, ingredients: { 'iron plate': 10, 'copper plate': 5, 'iron gear wheel': 10 } },
     'shotgun': { shortName: 'shg', fabTime: 10, ingredients: { 'wood': 5, 'iron plate': 15, 'copper plate': 10, 'iron gear wheel': 5 } },
+    'combat shotgun': { fabTime: 10, ingredients: { 'wood': 10, 'copper plate': 10, 'steel plate': 15, 'iron gear wheel': 5 } },
     'rocket': { fabTime: 8, ingredients: { 'iron plate': 2, 'explosives': 1, 'electronic circuit': 1 } },
     'flamethrower': { fabTime: 10, ingredients: { 'steel plate': 5, 'iron gear wheel': 10 } },
     'land mine': { fabTime: 5, yield: 4, ingredients: { 'steel plate': 1, 'explosives': 2 } },
@@ -226,19 +239,25 @@ export const items: { [key: string]: item } = {
     'piercing rounds magazine': { fabTime: 3, ingredients: { 'copper plate': 5, 'steel plate': 1, 'firearm magazine': 1 } },
     'shotgun shells': { fabTime: 3, ingredients: { 'iron plate': 2, 'copper plate': 2 } },
     'rocket launcher': { fabTime: 10, ingredients: { 'iron plate': 5, 'iron gear wheel': 5, 'electronic circuit': 5 } },
+    'explosive rocket': { fabTime: 8, ingredients: { 'explosives': 2, 'rocket': 1 } },
     'flamethrower ammo': { madeIn: CHEMICAL_PLANT, fabTime: 6, ingredients: { 'steel plate': 5, 'crude oil': 100 } },
 
     'grenade': { shortName: 'gr', fabTime: 8, ingredients: { 'coal': 10, 'iron plate': 5 } },
+    'poison capsule': { fabTime: 8, ingredients: { 'coal': 10, 'steel plate': 3, 'electronic circuit': 3 } },
+    'slowdown capsule': { shortName: 'slo', fabTime: 8, ingredients: { 'coal': 5, 'steel plate': 2, 'electronic circuit': 2 } },
     'defender capsule': { shortName: 'def', fabTime: 8, ingredients: { 'iron gear wheel': 3, 'electronic circuit': 3, 'piercing rounds magazine': 3 } },
 
     'light armor': { fabTime: 3, ingredients: { 'iron plate': 40 } },
     'heavy armor': { fabTime: 8, ingredients: { 'copper plate': 100, 'steel plate': 50 } },
     'modular armor': { fabTime: 15, ingredients: { 'steel plate': 50, 'advanced circuit': 30 } },
+    'power armor': { fabTime: 10, ingredients: { 'steel plate': 40, 'processing unit': 40, 'electric engine unit': 20 } },
 
     'portable solar panel': { shortName: 'psol', fabTime: 10, outputs: { 'electricity': 30 }, ingredients: { 'steel plate': 5, 'advanced circuit': 2, 'solar panel': 1 } },
     'personal battery': { shortName: 'pbat', fabTime: 10, ingredients: { 'steel plate': 10, 'battery': 5 } },
+    'personal battery mk2': { fabTime: 10, ingredients: { 'processing unit': 15, 'low density structure': 5, 'personal battery': 10 } },
     'belt immunity equipment': { fabTime: 10, ingredients: { 'steel plate': 10, 'advanced circuit': 5 } },
     'exoskeleton': { shortName: 'xo', fabTime: 10, inputs: { 'electricity': 200 }, ingredients: { 'steel plate': 20, 'processing unit': 10, 'electric engine unit': 30 } },
+    'personal roboport': { fabTime: 10, inputs: { 'electricity': 2000 }, ingredients: { 'steel plate': 20, 'battery': 45, 'iron gear wheel': 40, 'advanced circuit': 10 } },
     'nightvision': { fabTime: 10, ingredients: { 'steel plate': 10, 'advanced circuit': 5 } },
 
     'energy shield': { fabTime: 10, ingredients: { 'steel plate': 10, 'advanced circuit': 5 } },
@@ -246,6 +265,7 @@ export const items: { [key: string]: item } = {
     'wall': { fabTime: 0.5, ingredients: { 'stone brick': 5 } },
     'gate': { fabTime: 0.5, ingredients: { 'steel plate': 2, 'electronic circuit': 2, 'wall': 1 } },
     'gun turret': { fabTime: 8, ingredients: { 'iron plate': 20, 'copper plate': 10, 'iron gear wheel': 10 } },
+    'laser turret': { fabTime: 20, inputs: { 'electricity': 1220 }, ingredients: { 'steel plate': 20, 'battery': 12, 'electronic circuit': 20 } },
     'flamethrower turret': { fabTime: 20, ingredients: { 'steel plate': 30, 'iron gear wheel': 15, 'engine unit': 5, 'pipe': 10 } },
     'radar': { shortName: 'rdr', inputs: { 'electricity': 300 }, fabTime: 0.5, ingredients: { 'iron plate': 10, 'iron gear wheel': 5, 'electronic circuit': 5 } }
 }
