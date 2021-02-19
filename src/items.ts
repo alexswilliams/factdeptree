@@ -89,7 +89,7 @@ export const items: { [key: string]: item } = {
     'wooden chest': { fabTime: 0.5, ingredients: { 'wood': 2 } },
     'iron chest': { fabTime: 0.5, ingredients: { 'iron plate': 8 } },
     'steel chest': { fabTime: 0.5, ingredients: { 'steel plate': 8 } },
-    'storage tank': { shortName: 'tank', fabTime: 3, ingredients: { 'iron plate': 20, 'steel plate': 5 } },
+    'storage tank': { shortName: 'stor', fabTime: 3, ingredients: { 'iron plate': 20, 'steel plate': 5 } },
 
     'transport belt': { yield: 2, fabTime: 0.5, ingredients: { 'iron plate': 1, 'iron gear wheel': 1 } },
     'fast transport belt': { fabTime: 0.5, ingredients: { 'iron gear wheel': 5, 'transport belt': 1 } },
@@ -126,11 +126,15 @@ export const items: { [key: string]: item } = {
     'fluid wagon': { fabTime: 1.5, ingredients: { 'steel plate': 16, 'iron gear wheel': 10, 'storage tank': 1, 'pipe': 8 } },
 
     'car': { fabTime: 2, ingredients: { 'iron plate': 20, 'steel plate': 5, 'engine unit': 8 } },
+    'tank': { fabTime: 5, ingredients: { 'steel plate': 50, 'iron gear wheel': 15, 'advanced circuit': 10, 'engine unit': 32 } },
 
     'logistic robot': { fabTime: 0.5, inputs: { 'electricity': 18 }, ingredients: { 'advanced circuit': 2, 'flying robot frame': 1 } },
     'construction robot': { fabTime: 0.5, inputs: { 'electricity': 21 }, ingredients: { 'electronic circuit': 2, 'flying robot frame': 1 } },
+    'active provider chest': { fabTime: 0.5, ingredients: { 'electronic circuit': 3, 'advanced circuit': 1, 'steel chest': 1 } },
     'passive provider chest': { fabTime: 0.5, ingredients: { 'electronic circuit': 3, 'advanced circuit': 1, 'steel chest': 1 } },
     'storage chest': { shortName: 'stoc', fabTime: 0.5, ingredients: { 'electronic circuit': 3, 'advanced circuit': 1, 'steel chest': 1 } },
+    'buffer chest': { fabTime: 0.5, ingredients: { 'electronic circuit': 3, 'advanced circuit': 1, 'steel chest': 1 } },
+    'requester chest': { shortName: 'req', fabTime: 0.5, ingredients: { 'electronic circuit': 3, 'advanced circuit': 1, 'steel chest': 1 } },
     'roboport': { shortName: 'robo', fabTime: 5, inputs: { 'electricity': 4050 }, ingredients: { 'steel plate': 45, 'iron gear wheel': 45, 'advanced circuit': 45 } },
 
     'lamp': { shortName: 'lamp', inputs: { 'electricity': 5 }, fabTime: 0.5, ingredients: { 'iron plate': 1, 'copper cable': 3, 'electronic circuit': 1 } },
@@ -245,11 +249,15 @@ export const items: { [key: string]: item } = {
     'firearm magazine': { fabTime: 1, ingredients: { 'iron plate': 4 } },
     'piercing rounds magazine': { fabTime: 3, ingredients: { 'copper plate': 5, 'steel plate': 1, 'firearm magazine': 1 } },
     'shotgun shells': { fabTime: 3, ingredients: { 'iron plate': 2, 'copper plate': 2 } },
+    'piercing shotgun shells': { fabTime: 8, ingredients: { 'copper plate': 5, 'steel plate': 2, 'shotgun shells': 2 } },
+    'cannon shell': { shortName: 'shel', fabTime: 8, ingredients: { 'steel plate': 2, 'plastic bar': 2, 'explosives': 1 } },
+    'explosive cannon shell': { fabTime: 8, ingredients: { 'steel plate': 2, 'plastic bar': 2, 'explosives': 2 } },
     'rocket launcher': { fabTime: 10, ingredients: { 'iron plate': 5, 'iron gear wheel': 5, 'electronic circuit': 5 } },
     'explosive rocket': { fabTime: 8, ingredients: { 'explosives': 2, 'rocket': 1 } },
     'flamethrower ammo': { madeIn: CHEMICAL_PLANT, fabTime: 6, ingredients: { 'steel plate': 5, 'crude oil': 100 } },
 
     'grenade': { shortName: 'gr', fabTime: 8, ingredients: { 'coal': 10, 'iron plate': 5 } },
+    'cluster grenade': { fabTime: 8, ingredients: { 'steel plate': 5, 'explosives': 5, 'grenade': 7 } },
     'poison capsule': { fabTime: 8, ingredients: { 'coal': 10, 'steel plate': 3, 'electronic circuit': 3 } },
     'slowdown capsule': { shortName: 'slo', fabTime: 8, ingredients: { 'coal': 5, 'steel plate': 2, 'electronic circuit': 2 } },
     'defender capsule': { shortName: 'def', fabTime: 8, ingredients: { 'iron gear wheel': 3, 'electronic circuit': 3, 'piercing rounds magazine': 3 } },
@@ -268,6 +276,9 @@ export const items: { [key: string]: item } = {
     'nightvision': { fabTime: 10, ingredients: { 'steel plate': 10, 'advanced circuit': 5 } },
 
     'energy shield': { fabTime: 10, ingredients: { 'steel plate': 10, 'advanced circuit': 5 } },
+    'energy shield mk2': { fabTime: 10, ingredients: { 'processing unit': 5, 'low density structure': 5, 'energy shield': 10 } },
+    'discharge defence': { fabTime: 10, inputs: { 'electricity': 800 }, ingredients: { 'steel plate': 20, 'processing unit': 5, 'laser turret': 10 } },
+    'discharge defence remote': { fabTime: 0.5, ingredients: { 'electronic circuit': 1 } },
 
     'wall': { fabTime: 0.5, ingredients: { 'stone brick': 5 } },
     'gate': { fabTime: 0.5, ingredients: { 'steel plate': 2, 'electronic circuit': 2, 'wall': 1 } },
