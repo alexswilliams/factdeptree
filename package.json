@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "description": "Outputs an optimal dependency chart for factorio",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "ts-node src/build-dep-tree.ts",
+    "test": "jest"
+  },
   "author": "Alex Williams",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^27.3.1",
-    "ts-jest": "^27.0.7",
-    "ts-node": "^10.3.0",
-    "typescript": "^4.4.4"
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.3",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.7.2"
   },
   "dependencies": {
-    "@types/jest": "^27.0.2"
+    "@types/jest": "^27.5.1"
   }
 }
